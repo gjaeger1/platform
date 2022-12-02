@@ -33,7 +33,7 @@
 #endif
 #elif defined(__EMSCRIPTEN__)
 #define PLATFORM_EMSCRIPTEN 1
-#else
+#elif not defined(PLATFORM_ALLOW_UNKNOWN_OS)
 #error "Unable to determine operating system"
 #endif
 
@@ -85,7 +85,7 @@
 #define PLATFORM_ARM 1
 #define PLATFORM_MSVC_ARM 1
 #endif
-#else
+#elif not defined(PLATFORM_ALLOW_UNKNOWN_COMPILER)
 #error "Unable to determine compiler"
 #endif
 

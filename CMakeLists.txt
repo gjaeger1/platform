@@ -3,7 +3,6 @@ project(platform)
 
 # Define library
 add_library(platform INTERFACE)
-target_compile_features(platform INTERFACE cxx_std_14)
 target_include_directories(platform INTERFACE src/)
 add_library(steinwurf::platform ALIAS platform)
 
