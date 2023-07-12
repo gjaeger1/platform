@@ -10,33 +10,6 @@
 // Some information about the defines used can be found here:
 // http://sourceforge.net/p/predef/wiki/Architectures/
 
-// Detect operating systems
-#if defined(__linux__)
-#define PLATFORM_LINUX 1
-#if defined(__ANDROID__)
-#define PLATFORM_ANDROID 1
-#endif
-#elif defined(_WIN32)
-#define PLATFORM_WINDOWS 1
-#if defined(WINAPI_FAMILY)
-#include <winapifamily.h>
-#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
-#define PLATFORM_WINDOWS_PHONE 1
-#endif
-#endif
-#elif defined(__APPLE__)
-// Detect iOS before MacOSX (__MACH__ is also defined for iOS)
-#if defined(IPHONE)
-#define PLATFORM_IOS 1
-#elif defined(__MACH__)
-#define PLATFORM_MAC 1
-#endif
-#elif defined(__EMSCRIPTEN__)
-#define PLATFORM_EMSCRIPTEN 1
-#else
-#error "Unable to determine operating system"
-#endif
-
 // Detect compilers and CPU architectures
 // Note: clang also defines __GNUC__ since it aims to be compatible with GCC.
 // Therefore we need to check for __clang__ or __llvm__ first.
@@ -85,7 +58,7 @@
 #define PLATFORM_ARM 1
 #define PLATFORM_MSVC_ARM 1
 #endif
-#else
+#elif not defined(PLATFORM_ALLOW_UNKNOWN_COMPILER)
 #error "Unable to determine compiler"
 #endif
 
@@ -157,3 +130,35 @@
 #define PLATFORM_AVX2 1
 #endif
 #endif
+
+// Detect operating systems
+#if defined(__linux__)
+    #define PLATFORM_LINUX 1
+    #if defined(__ANDROID__)
+        #define PLATFORM_ANDROID 1
+    #endif
+#elif defined(_WIN32)
+    #define PLATFORM_WINDOWS 1
+    #if defined(WINAPI_FAMILY)
+        #include <winapifamily.h>
+        #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+            #define PLATFORM_WINDOWS_PHONE 1
+        #endif
+    #endif
+#elif defined(__APPLE__)
+// Detect iOS before MacOSX (__MACH__ is also defined for iOS)
+    #if defined(IPHONE)
+        #define PLATFORM_IOS 1
+    #elif defined(__MACH__)
+        #define PLATFORM_MAC 1
+    #endif
+#elif defined(__EMSCRIPTEN__)
+    #define PLATFORM_EMSCRIPTEN 1
+#elif not defined(PLATFORM_ALLOW_UNKNOWN_OS)
+    #error "Unable to determine operating system"
+#endif
+
+// Detect RP2040 micro controllers
+#if defined(PICO_BOARD)
+    #define PLATFORM_RP2040 1
+#endif 
