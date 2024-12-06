@@ -154,11 +154,10 @@
     #endif
 #elif defined(__EMSCRIPTEN__)
     #define PLATFORM_EMSCRIPTEN 1
+#elif defined(INC_FREERTOS_H) || defined(tskKERNEL_VERSION_NUMBER)
+    #define PLATFOMR_FREERTOS 1
+#elif defined(PICO_SDK_VERSION_MAJOR)
+    #define PLATFORM_PICO_SDK 1
 #elif not defined(PLATFORM_ALLOW_UNKNOWN_OS)
     #error "Unable to determine operating system"
 #endif
-
-// Detect RP2040 micro controllers
-#if defined(PICO_BOARD)
-    #define PLATFORM_RP2040 1
-#endif 
